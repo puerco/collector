@@ -4,6 +4,8 @@
 package dsse
 
 import (
+	"crypto/x509"
+
 	"github.com/carabiner-dev/attestation"
 	sigstoreProtoDSSE "github.com/sigstore/protobuf-specs/gen/pb-go/dsse"
 
@@ -43,9 +45,37 @@ func (env *Envelope) GetCertificate() attestation.Certificate {
 	return nil
 }
 
-// TODO(puerco): Implement
-func (env *Envelope) Verify() error {
-	return nil
+type VerificationOptions struct {
+	attestation.EnvelopeVerificationOptions
+}
+
+func (vo *VerificationOptions) ToEnvelopeVerificationOptions() attestation.EnvelopeVerificationOptions {
+	return vo.EnvelopeVerificationOptions
+}
+
+// Verify verifies the envelope signatures.
+func (env *Envelope) Verify(verMaterial ...any) error {
+	// If the bundle is already verified, don't retry
+	if env.GetVerification() != nil {
+		return nil
+	}
+
+	// If there are no signatures, we return a nil error. It's up to the
+	// customer to accept/deny unsigned envelopes.
+	if len(env.Envelope.Signatures) == 0 {
+		return nil
+	}
+
+	key, err = x509.ParsePKCS1PrivateKey(data)
+	if err == nil {
+		return key, nil
+	}
+
+	key, err = x509.ParsePKIXPublicKey(data)
+	if err == nil {
+		return key, nil
+	}
+
 }
 
 // GetVerifications returns the envelop signtature verifications
