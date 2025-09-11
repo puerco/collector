@@ -36,7 +36,7 @@ func (p *Parser) ParseStream(r io.Reader) ([]attestation.Envelope, error) {
 		return nil, fmt.Errorf("unmarshalling data: %w", err)
 	}
 
-	// Asign the proto to our envelope wrapper
+	// Assign the proto to our envelope wrapper
 	env := Envelope{
 		Envelope: dsseEnvelope,
 	}

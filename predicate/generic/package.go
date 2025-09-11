@@ -31,7 +31,7 @@ func (p *Predicate) GetData() []byte                   { return p.Data }
 func (p *Predicate) GetOrigin() attestation.Subject    { return p.Source }
 func (p *Predicate) SetOrigin(src attestation.Subject) { p.Source = src }
 
-// SetVerification fixes the siganture verification object.
+// SetVerification fixes the signature verification object.
 func (p *Predicate) SetVerification(vf attestation.Verification) {
 	p.Verification = vf
 }
